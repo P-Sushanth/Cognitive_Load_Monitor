@@ -5,7 +5,6 @@ const Task = require('./models/Task');
 
 const path = require('path');
 
-// Load env vars
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const seedData = async () => {
@@ -13,7 +12,6 @@ const seedData = async () => {
         await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected for Seeding...');
 
-        // Find a user to assign tasks to
         const user = await User.findOne();
         if (!user) {
             console.log('No users found. Please register a user first.');
@@ -27,7 +25,6 @@ const seedData = async () => {
         yesterday.setDate(yesterday.getDate() - 1);
 
         const tasks = [
-            // Today's tasks (Overlap scenario)
             {
                 user: user._id,
                 name: 'Morning Study Session',
@@ -49,7 +46,6 @@ const seedData = async () => {
                 loadLevel: 2,
                 date: today
             },
-            // Yesterday's tasks
             {
                 user: user._id,
                 name: 'Late Night Coding',

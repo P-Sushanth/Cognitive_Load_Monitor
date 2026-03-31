@@ -31,7 +31,6 @@ body {
     padding: 20px;
 }
 
-/* Auth Pages */
 .auth-container {
     display: flex;
     justify-content: center;
@@ -57,7 +56,6 @@ body {
     margin-bottom: 1rem;
     text-align: left;
     position: relative;
-    /* For password toggle positioning */
 }
 
 .password-wrapper {
@@ -151,7 +149,6 @@ button:hover {
     text-decoration: none;
 }
 
-/* Dashboard */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -174,7 +171,6 @@ button:hover {
     gap: 20px;
 }
 
-/* Add Task Form */
 .task-form-card {
     background-color: var(--card-bg);
     padding: 20px;
@@ -273,20 +269,15 @@ input[type=range]::-webkit-slider-thumb {
     border-radius: 8px;
     margin-bottom: 20px;
     display: none;
-    /* Hidden by default */
 }
 
 .task-list {
     margin-top: 20px;
     max-height: 400px;
-    /* Fixed height */
     overflow-y: auto;
-    /* Scrollable */
     padding-right: 5px;
-    /* Space for scrollbar */
 }
 
-/* Custom Scrollbar for dark theme style */
 .task-list::-webkit-scrollbar {
     width: 8px;
 }
@@ -333,7 +324,6 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer;
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;

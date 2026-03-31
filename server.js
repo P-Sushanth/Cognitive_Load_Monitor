@@ -6,15 +6,12 @@ const connectDB = require('./backend/config/db');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('frontend')); // Serve frontend files
+app.use(express.static('frontend'));
 
-// Database Connection
 connectDB();
 
-// Routes Placeholder
 app.use('/auth', require('./backend/routes/authRoutes'));
 app.use('/tasks', require('./backend/routes/taskRoutes'));
 app.use('/analytics', require('./backend/routes/analyticsRoutes'));

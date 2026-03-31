@@ -1,6 +1,5 @@
 const Task = require('../models/Task');
 
-// Create a Task
 exports.createTask = async (req, res) => {
     const { name, duration, loadLevel, date } = req.body;
     try {
@@ -19,7 +18,6 @@ exports.createTask = async (req, res) => {
     }
 };
 
-// Get All Tasks for logged in user
 exports.getTasks = async (req, res) => {
     try {
         const tasks = await Task.find({ user: req.user.id }).sort({ date: -1 });
@@ -30,7 +28,6 @@ exports.getTasks = async (req, res) => {
     }
 };
 
-// Delete Task
 exports.deleteTask = async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
@@ -38,7 +35,6 @@ exports.deleteTask = async (req, res) => {
             return res.status(404).json({ msg: 'Task not found' });
         }
 
-        // Check user
         if (task.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not authorized' });
         }
@@ -50,11 +46,9 @@ exports.deleteTask = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
-// Update Task
 exports.updateTask = async (req, res) => {
     const { name, duration, loadLevel, date } = req.body;
 
-    // Build task object
     const taskFields = {};
     if (name) taskFields.name = name;
     if (duration) taskFields.duration = duration;
@@ -66,7 +60,6 @@ exports.updateTask = async (req, res) => {
 
         if (!task) return res.status(404).json({ msg: 'Task not found' });
 
-        // Make sure user owns task
         if (task.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not authorized' });
         }

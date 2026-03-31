@@ -1,4 +1,3 @@
-// Check auth
 const token = localStorage.getItem('token');
 if (!token) {
     window.location.href = 'index.html';
@@ -10,14 +9,13 @@ document.getElementById('logout-btn').addEventListener('click', () => {
     window.location.href = 'index.html';
 });
 
-// Slider Color Logic
 const slider = document.getElementById('loadLevel');
 const output = document.getElementById('loadVal');
 
 function updateSliderColor(val) {
-    let color = '#4caf50'; // Green
-    if (val >= 3) color = '#ffd54f'; // Yellow
-    if (val >= 4) color = '#cf6679'; // Red
+    let color = '#4caf50';
+    if (val >= 3) color = '#ffd54f';
+    if (val >= 4) color = '#cf6679';
 
     output.textContent = val;
     output.style.color = color;
@@ -34,13 +32,11 @@ if (slider && output) {
     slider.oninput = function () { updateSliderColor(this.value); }
 }
 
-// Global State
-let allTasks = []; // Store fetched tasks for filtering
+let allTasks = [];
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
-let selectedDate = null; // Filter date
+let selectedDate = null;
 
-// Chart Instances
 let dailyChartInstance = null;
 let weeklyChartInstance = null;
 
@@ -50,24 +46,22 @@ async function loadDashboard() {
     renderCalendar();
 }
 
-// Load Tasks and Store
 async function loadTasks() {
     try {
         allTasks = await api.request('/tasks');
         allTasks.sort((a, b) => new Date(b.date) - new Date(a.date));
         renderTaskList();
-        renderCalendar(); // Re-render to show dots
+        renderCalendar();
     } catch (err) {
         console.error(err);
     }
 }
 
-// Render List (Filtered or All)
+
 function renderTaskList() {
     const list = document.getElementById('task-list');
     list.innerHTML = '';
 
-    // Filter logic
     let tasksToShow = allTasks;
     if (selectedDate) {
         tasksToShow = allTasks.filter(task => {
@@ -107,50 +101,44 @@ function renderTaskList() {
     });
 }
 
-// Calendar Logic
+
 function renderCalendar() {
     const calendar = document.getElementById('calendar');
     const monthYear = document.getElementById('month-year');
-    if (!calendar) return; // Guard
+    if (!calendar) return;
 
     calendar.innerHTML = '';
 
-    // Set Header
+    calendar.innerHTML = '';
+
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
     monthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
-    // Calculate days
     const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-    // Map tasks to dates for highlighting
     const tasksByDate = new Set();
     allTasks.forEach(task => {
         const d = new Date(task.date);
         tasksByDate.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
     });
 
-    // Empty slots for previous month
     for (let i = 0; i < firstDay; i++) {
         const div = document.createElement('div');
         calendar.appendChild(div);
     }
 
-    // Days
     for (let day = 1; day <= daysInMonth; day++) {
         const div = document.createElement('div');
         div.className = 'calendar-day';
         div.textContent = day;
 
-        // Highlight if logs exist
-        const dateKey = `${currentYear}-${currentMonth}-${day}`;
         if (tasksByDate.has(dateKey)) {
-            div.classList.add('has-logs'); // CSS dot
+            div.classList.add('has-logs');
         }
 
-        // Selected state
         if (selectedDate &&
             selectedDate.getDate() === day &&
             selectedDate.getMonth() === currentMonth &&
@@ -176,11 +164,9 @@ function changeMonth(dir) {
 }
 
 function selectDate(day) {
-    // If clicking same date, unselect? Or strict filtering?
-    // Let's assume strict selection.
     selectedDate = new Date(currentYear, currentMonth, day);
-    renderCalendar(); // Re-render to show selection highlight
-    renderTaskList(); // Filter list
+    renderCalendar();
+    renderTaskList();
 }
 
 function resetFilter() {
@@ -284,7 +270,7 @@ function updateCharts(history, weeklyWeb) {
 
     if (weeklyChartInstance) weeklyChartInstance.destroy();
     weeklyChartInstance = new Chart(ctxWeekly, {
-        type: 'bar', // or 'bar'
+        type: 'bar',
         data: {
             labels: weeklyLabels,
             datasets: [{
@@ -304,7 +290,6 @@ function updateCharts(history, weeklyWeb) {
     });
 }
 
-// Edit Logic
 const editModal = document.getElementById('edit-modal');
 const editForm = document.getElementById('edit-task-form');
 
@@ -366,12 +351,10 @@ if (editForm) {
     };
 }
 
-// Close modal when clicking outside
 window.onclick = function (event) {
     if (event.target == editModal) {
         closeEditModal();
     }
 }
 
-// Init
 window.addEventListener('DOMContentLoaded', loadDashboard);
